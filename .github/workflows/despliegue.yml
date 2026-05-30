@@ -1,10 +1,14 @@
-name: Despliegue de Node.js con Docker
+name: Despliegue de Node.js con Docker hello-alex:2.0.0
 
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+
+permissions:
+  contents: read
+  packages: write
 
 jobs:
   build-and-test:
@@ -19,15 +23,39 @@ jobs:
     - name: Configurar Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '22' # Usamos la misma versión que tienes instalada
+        node-version: '22'
 
-    # 3. Instalar dependencias y correr pruebas de JavaScript
-    - name: Instalar dependencias y probar app
+    # 3. Instalar dependencias de JavaScript
+    - name: Install dependencies
       run: |
         npm install
+
+    # 4. Ejecutar la app directamente en Node.js
+    - name: Ejecutar la app
+      run: |
+        node app.js
+
+    # 5. Correr pruebas de JavaScript
+    - name: Test with npm
+      run: |
         npm test
 
-    # 4. Construir la imagen de Docker para verificar que no tenga errores
-    - name: Construir imagen Docker
+    # 6. Simulacion del deploy
+    - name: simulacion del deploy
       run: |
-        docker build -t mi-app-node .
+        echo "simular que se esta desplegando la aplicacion en un servidor"
+
+    # 7. Construir la imagen de Docker
+    - name: construir la imagen de docker
+      run: |
+        docker build -t ghcr.io/arszaruma-gif/hello-alex:1.0.0 .
+
+    # 8. Login en GitHub Container Registry
+    - name: Login en GitHub Container Registry
+      run: |
+        echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+    # 9. Publicar la imagen en GitHub Packages
+    - name: publicar la imagen
+      run: |
+        docker push ghcr.io/arszaruma-gif/hello-alex:2.0.0
