@@ -1,0 +1,1 @@
+console.log("Corriendo los tests del proyecto... 🧪");

@@ -1,0 +1,33 @@
+name: Despliegue de Node.js con Docker
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Descargar el código del repositorio
+    - name: Checkout de código
+      uses: actions/checkout@v4
+
+    # 2. Configurar el entorno de Node.js
+    - name: Configurar Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22' # Usamos la misma versión que tienes instalada
+
+    # 3. Instalar dependencias y correr pruebas de JavaScript
+    - name: Instalar dependencias y probar app
+      run: |
+        npm install
+        npm test
+
+    # 4. Construir la imagen de Docker para verificar que no tenga errores
+    - name: Construir imagen Docker
+      run: |
+        docker build -t mi-app-node .
