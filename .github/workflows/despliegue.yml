@@ -48,7 +48,7 @@ jobs:
     # 7. Construir la imagen de Docker
     - name: construir la imagen de docker
       run: |
-        docker build -t ghcr.io/arszaruma-gif/hello-alex:1.0.0 .
+        docker build -t ghcr.io/arszaruma-gif/hello-alex:2.0.0 .
 
     # 8. Login en GitHub Container Registry
     - name: Login en GitHub Container Registry
